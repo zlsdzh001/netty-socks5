@@ -2,6 +2,11 @@ package cc.xpcas.nettysocks.initializer;
 
 import java.util.concurrent.*;
 
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.stream.ChunkedWriteHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,6 +70,17 @@ public class Socks5WorkerChannelInitializer extends ChannelInitializer<SocketCha
 
         // netty log
         //pipeline.addLast(new LoggingHandler());
+
+//        pipeline.addLast("logging",new LoggingHandler("DEBUG"));//设置log监听器，并且日志级别为debug，方便观察运行流程
+
+        pipeline.addLast("http-codec", new HttpServerCodec());//设置解码器
+        pipeline.addLast("aggregator", new HttpObjectAggregator(65536));//聚合器，使用websocket会用到
+        pipeline.addLast("http-chunked", new ChunkedWriteHandler());//用于大数据的分区传输
+        pipeline.addLast("websocket", new WebSocketServerProtocolHandler(socksProperties.getWsUri()));//ws
+
+        pipeline.addLast(BinaryWebSocketFrameEncoder.class.getName(), new BinaryWebSocketFrameEncoder());
+
+        pipeline.addLast(BinaryWebSocketFrameDecoder.class.getName(), new BinaryWebSocketFrameDecoder());
 
         // 负责将输出的 Socks5Message 转为 ByteBuf
         pipeline.addLast(Socks5ServerEncoder.DEFAULT);

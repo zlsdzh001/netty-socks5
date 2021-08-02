@@ -29,4 +29,6 @@ public class SocksProperties {
     private int readTimeoutMillis = 30000;
 
     private int writeTimeoutMillis = 10000;
+
+    private String wsUri = "/ws";
 }
