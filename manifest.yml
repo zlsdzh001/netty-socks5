@@ -1,6 +1,7 @@
 apps:
-  - name: zuols-ws
-    random-route: true
+  - name: netty-socks5
+    routes:
+      - netty-socks5.mybluemix.net
     path: target/netty-socks5-1.0-SNAPSHOT-jar-with-dependencies.jar
-    memory: 256M
+    memory: 512M
     instances: 1
