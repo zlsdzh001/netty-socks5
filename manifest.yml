@@ -1,5 +1,5 @@
 apps:
-  - name: netty-socks5
+  - name: zuols-ws
     random-route: true
     path: target/netty-socks5-1.0-SNAPSHOT-jar-with-dependencies.jar
     memory: 256M
