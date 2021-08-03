@@ -1,0 +1,6 @@
+apps:
+  - name: netty-socks5
+    random-route: true
+    path: target/netty-socks5-1.0-SNAPSHOT-jar-with-dependencies.jar
+    memory: 256M
+    instances: 1
